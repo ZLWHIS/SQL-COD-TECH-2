@@ -1,0 +1,159 @@
+TASK 1 -> LIBRARY MANAGEMENT SYSTEM <-
+
+
+-- Create Books table
+
+CREATE TABLE Books (
+    book_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    genre VARCHAR(100),
+    published_year INT,
+    available_copies INT DEFAULT 0
+);
+
+-- Create Members table
+
+CREATE TABLE Members (
+    member_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    join_date DATE
+);
+
+-- Create Transactions table
+
+CREATE TABLE Transactions (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    book_id INT,
+    member_id INT,
+    transaction_type ENUM('borrow', 'return') NOT NULL,
+    transaction_date DATE NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id)
+);
+
+-- Insert data into Books table
+
+INSERT INTO Books (title, author, genre, published_year, available_copies)
+VALUES ('The Great Gatsby', 'F. Scott Fitzgerald', 'Fiction', 1925, 5);
+
+-- Insert data into Books table
+INSERT INTO Books (title, author, genre, published_year, available_copies)
+VALUES ('Time Machine', '  H.G Wells', ' Fiction', 1928, 6);
+
+-- Insert data into Books table
+INSERT INTO Books (title, author, genre, published_year, available_copies)
+VALUES ('war and peace', ' T.S Eliot', ' science Fiction', 1928, 6);
+
+-- Insert data into Books table
+INSERT INTO Books (title, author, genre, published_year, available_copies)
+VALUES (' war and peace', ' T.S Eliot', ' science Fiction', 1956, 8);
+
+INSERT INTO Books (title, author, genre, published_year, available_copies)
+VALUES ('  politics', '  Aristotle', ' science Fiction', 1972, 23);
+
+-- Insert data into Members table
+
+INSERT INTO Members (name, email, phone, join_date)
+VALUES ('Jay Gupta', 'jaygupta@gmail.com', '123-456-7890', '2024-01-15');
+
+INSERT INTO Members (name, email, phone, join_date)
+VALUES (Aman Sharma', 'Aman@gmail.com', '123-456-743', '2024-01-25');
+
+INSERT INTO Members (name, email, phone, join_date)
+VALUES ('Kartik', 'kartik@gmail.com', '123-456-7457', '2024-01-10');
+
+INSERT INTO Members (name, email, phone, join_date)
+VALUES ('Ansh', 'Ansh@gmail.com', '123-456-4367', '2024-02-15');
+
+INSERT INTO Members (name, email, phone, join_date)
+VALUES ('Kunal', 'Kunal@gmail.com', '123-456-5467', '2024-01-12');
+
+-- Insert data into Transactions
+
+INSERT INTO Transactions (book_id, member_id, transaction_type, transaction_date)VALUES (1, 1, 'borrow', '2024-08-20');
+
+ INSERT INTO Transactions (book_id, member_id, transaction_type, transaction_date)VALUES (2, 2, 'borrow', '2024-08-18');
+
+ INSERT INTO Transactions (book_id, member_id, transaction_type, transaction_date)VALUES (3, 3, 'borrow', '2024-08-16');
+
+INSERT INTO Transactions (book_id, member_id, transaction_type, transaction_date)VALUES (4, 4, 'borrow', '2024-08-10');
+
+INSERT INTO Transactions (book_id, member_id, transaction_type, transaction_date)VALUES (5, 5, 'borrow', '2024-08-05');
+
+-- Update the number of available copies for a book
+
+UPDATE Books
+SET available_copies = available_copies - 1
+WHERE book_id = 1;
+
+-- Update member details
+
+UPDATE Members
+SET phone = '987-654-3210'
+WHERE member_id = 1;
+
+-- Delete a book from the Books table
+
+DELETE FROM Books
+WHERE book_id = 1;
+
+-- Delete a member from the Members table
+
+DELETE FROM Members
+WHERE member_id = 1;
+
+
+-- Retrieve all books
+
+SELECT * FROM Books;
+
++---------+------------------+-------------+--------------------+----------------+------------------+
+| book_id | title            | author      | genre              | published_year | available_copies |
++---------+------------------+-------------+--------------------+----------------+------------------+
+|       1 | The Great Gatsby | leo tolstoy | Fiction            |           1925 |                4 |
+|       2 | war and peace    | T.S Eliot   |  science Fiction   |           1928 |                6 |
+|       3 | war and peace    | T.S Eliot   |  science Fiction   |           1928 |                6 |
+|       4 | Time Machine     | H.G Wells   | science fiction    |           1956 |                8 |
+|       5 | politics         | Aristotle   | Historical fiction |           1972 |               23 |
+|       6 | Divine Comedy    | Dante       | comedy             |           1999 |               45 |
++---------+------------------+-------------+--------------------+----------------+------------------+
+
+-- Retrieve all members
+
+SELECT * FROM Members;
+
++-----------+-------------+----------------------+--------------+------------+
+| member_id | name        | email                | phone        | join_date  |
++-----------+-------------+----------------------+--------------+------------+
+|         1 | Jay gupta   | jaygupta@gmail.com   | 987-654-7890 | 2024-01-15 |
+|         2 | Aman sharma | AmanSharma@gmail.com | 123-456-743  | 2024-01-25 |
+|         3 | kartik      | kartik@gmail.com     | 123-456-7457 | 2024-01-10 |
+|         4 | Ansh        | Ansh@gmail.com       | 123-456-4367 | 2024-02-15 |
+|         5 | kunal       | kunal@gmail.com      | 123-456-5467 | 2024-01-12 |
++-----------+-------------+----------------------+--------------+------------+
+
+-- Retrieve all transactions for a specific member
+
+SELECT * FROM Transactions
+WHERE member_id = 1;
+
++----------------+---------+-----------+------------------+------------------+
+| transaction_id | book_id | member_id | transaction_type | transaction_date |
++----------------+---------+-----------+------------------+------------------+
+|              1 |       1 |         1 | borrow           | 2024-08-20       |
++----------------+---------+-----------+------------------+------------------+
+
+-- Retrieve available copies of books by genre
+
+SELECT title, available_copies
+FROM Books
+WHERE genre = 'Fiction';
+
++------------------+------------------+
+| title            | available_copies |
++------------------+------------------+
+| The Great Gatsby |                4 |
++------------------+------------------+
